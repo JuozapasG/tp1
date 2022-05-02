@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="lt.vu.mybatis.model.Animal" alias="Animal"/>
+        <typeAlias type="lt.vu.mybatis.model.Food" alias="Food"/>
+        <typeAlias type="lt.vu.mybatis.model.Shelter" alias="Shelter"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="MANAGED"/>
+            <dataSource type="JNDI">
+                <property name="data_source" value="ShelterDataSource"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="lt/vu/mybatis/xml/AnimalMapper.xml"/>
+        <mapper resource="lt/vu/mybatis/xml/FoodMapper.xml"/>
+        <mapper resource="lt/vu/mybatis/xml/ShelterMapper.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+>
+<head>
+    <title>Shelter information</title>
+</head>
+<body>
+<div>
+    <h1>Shelter information</h1>
+    <h2>Shelter with id #{shelterModel.shelter.id}</h2>
+    <h2>Shelter name : #{shelterModel.shelter.name}</h2>
+    <h2>Address : #{shelterModel.shelter.address}</h2>
+    <ul>
+        <ui:repeat value="#{shelterModel.shelter.animals}" var="animal">
+            <li>#{animal.name}, is type of #{animal.type}, lives in #{animal.shelter.name}</li>
+        </ui:repeat>
+    </ul>
+    <h:form>
+        <div>Migrate animal with id:</div>
+        <h:inputText value="#{shelterModel.migrationInfo.animalId}" pt:placeholder="Id"/>
+        <h:commandButton action="#{shelterModel.migrateAnimal}" value="Migrate animal"/>
+    </h:form>
+    <div>
+        <ul>
+            <ui:repeat value="#{shelterModel.otherAnimals}" var="otherAnimal">
+                <li>#{otherAnimal.id} #{otherAnimal.name}, lives in #{otherAnimal.shelter.name}</li>
+            </ui:repeat>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

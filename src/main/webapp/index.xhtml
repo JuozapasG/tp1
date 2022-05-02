@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<body>
+<h1>Animal shelter</h1>
+<div class="container">
+    <div class="row">
+        Animals living in shelter:
+        <ul>
+            <ui:repeat value="#{mainModel.animals}" var="animal">
+                <li>
+                    <a href="animal-info.xhtml?animalId=#{animal.id}"> #{animal.name}</a>, is type of #{animal.type}, lives in #{animal.shelter.name}
+                </li>
+            </ui:repeat>
+        </ul>
+    </div>
+    <div>
+        <h2>Add new animal</h2>
+        <h:form>
+            <o:importConstants type="lt.vu.constants.AnimalTypeConstants"/>
+            <h:inputText value="#{mainModel.newAnimal.name}" label="Animal name" required="true"
+                         pt:placeholde="Name"/>
+            <h:selectOneMenu value="#{mainModel.newAnimal.type}">
+                <f:selectItems value="#{mainModel.animalTypeConstants.types}"/>
+            </h:selectOneMenu>
+            <h:inputText value="#{mainModel.newAnimal.shelter.id}" required="true" label="Animal Shelter"
+                         pt:placeholder="Shelter id"/>
+            <h:inputText value="#{mainModel.newAnimal.newFoodId}" required="true" label="Food id"
+                         pt:placeholder="Food id"/>
+            <h:commandButton action="#{mainModel.addAnimal}" value="Add new animal"/>
+        </h:form>
+    </div>
+    <div>
+        <h2>Shelters list:</h2>
+        <ul>
+            <ui:repeat value="#{mainModel.shelters}" var="shelter">
+                <li>
+                    <a href="shelter-info.xhtml?shelterId=#{shelter.id}">#{shelter.id} : #{shelter.name}</a>
+                    , adress - #{shelter.address}
+                </li>
+            </ui:repeat>
+        </ul>
+    </div>
+    <div>
+        <h2>Add new shelter</h2>
+        <h:form>
+            <h:inputText value="#{mainModel.newShelter.name}" required="true" pt:placeholder="Name"
+                         label="Shelter name"/>
+            <h:inputText value="#{mainModel.newShelter.address}" pt:placeholder="Address"/>
+            <h:commandButton action="#{mainModel.createNewShelter}" value="Add"/>
+        </h:form>
+    </div>
+
+    <div>
+        <h2>Food list:</h2>
+        <ul>
+            <ui:repeat value="#{mainModel.food}" var="f">
+                <li>
+                    <a href="shelter-info.xhtml?shelterId=#{f.id}">#{f.id} : #{f.name}</a>
+                    , consumers : - #{f.consumersString}
+                </li>
+            </ui:repeat>
+        </ul>
+    </div>
+    <div>
+        <h2>Add new food type</h2>
+        <h:form>
+            <h:inputText value="#{mainModel.newFood.name}" required="true" pt:placeholder="Name" label="Food name"/>
+            <h:commandButton action="#{mainModel.createNewFood}" value="Add"/>
+        </h:form>
+    </div>
+
+</div>
+</body>
+</html>
