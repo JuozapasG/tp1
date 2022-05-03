@@ -50,14 +50,7 @@ public class ShelterModel implements Serializable {
             return;
         }
         shelter = shelterService.getById(Long.valueOf(id));
-        var shelterAnimalsIds = shelter.getAnimals()
-                .stream()
-                .map(AnimalDto::getId)
-                .collect(Collectors.toList());
-        otherAnimals = animalService.getAll()
-                .stream()
-                .filter(animal -> !shelterAnimalsIds.contains(animal.getId()))
-                .collect(Collectors.toList());
+        otherAnimals = shelterService.getOtherAnimals(Long.valueOf(id));
         migrationInfo.setShelterId(shelter.getId());
     }
 

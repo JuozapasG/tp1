@@ -1,5 +1,6 @@
 package lt.vu.mybatis.dao;
 
+import lt.vu.mybatis.model.Animal;
 import lt.vu.mybatis.model.Shelter;
 import org.mybatis.cdi.Mapper;
 
@@ -45,4 +46,6 @@ public interface ShelterMapper {
      * @mbg.generated Mon May 02 21:17:03 EEST 2022
      */
     int updateByPrimaryKey(Shelter record);
+
+    List<Animal> selectOtherAnimals(Long id);
 }

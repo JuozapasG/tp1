@@ -43,7 +43,7 @@
             <ui:repeat value="#{mainModel.shelters}" var="shelter">
                 <li>
                     <a href="shelter-info.xhtml?shelterId=#{shelter.id}">#{shelter.id} : #{shelter.name}</a>
-                    , adress - #{shelter.address}
+                    , address - #{shelter.address}
                 </li>
             </ui:repeat>
         </ul>
@@ -63,8 +63,7 @@
         <ul>
             <ui:repeat value="#{mainModel.food}" var="f">
                 <li>
-                    <a href="shelter-info.xhtml?shelterId=#{f.id}">#{f.id} : #{f.name}</a>
-                    , consumers : - #{f.consumersString}
+                    #{f.id} : #{f.name}, consumers : - #{f.consumersString}
                 </li>
             </ui:repeat>
         </ul>

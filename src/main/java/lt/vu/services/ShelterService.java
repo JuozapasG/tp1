@@ -1,8 +1,8 @@
 package lt.vu.services;
 
-import lombok.extern.slf4j.Slf4j;
 import lt.vu.dao.AnimalDAO;
 import lt.vu.dao.ShelterDAO;
+import lt.vu.dtos.AnimalDto;
 import lt.vu.dtos.ShelterDto;
 import lt.vu.mybatis.dao.ShelterMapper;
 import lt.vu.mybatis.model.Shelter;
@@ -39,18 +39,47 @@ public class ShelterService {
     }
 
     public ShelterDto getById(Long id) {
-        return ShelterDto.from(shelterDAO.getById(id));
+        var shelter = shelterMapper.selectByPrimaryKey(id);
+        return ShelterDto.builder()
+                .id(shelter.getId())
+                .address(shelter.getAddress())
+                .name(shelter.getName())
+                .animals(shelter.getAnimals()
+                        .stream()
+                        .map(animal -> AnimalDto.builder()
+                                .id(animal.getId())
+                                .type(animal.getType())
+                                .name(animal.getName())
+                                .build()
+                        ).collect(Collectors.toList()))
+                .build();
     }
 
     public String migrateAnimal(Long animalId, Long newShelterId) {
         var animal = animalDAO.getById(animalId);
         var newShelter = shelterDAO.getById(newShelterId);
-        if( animal.getShelter() != null){
+        if (animal.getShelter() != null) {
             var oldShelter = animal.getShelter();
             oldShelter.getAnimals().remove(animal);
         }
         animal.setShelter(newShelter);
         newShelter.getAnimals().add(animal);
         return "successMigrating";
+    }
+
+    public List<AnimalDto> getOtherAnimals(Long shelterId) {
+        var animalList = shelterMapper.selectOtherAnimals(shelterId);
+        return animalList.stream().map(animal -> {
+            var shelter = shelterMapper.selectByPrimaryKey(animal.getShelterId());
+            return AnimalDto.builder()
+                    .name(animal.getName())
+                    .type(animal.getType())
+                    .shelter(ShelterDto.builder()
+                            .name(shelter.getName())
+                            .address(shelter.getAddress())
+                            .build()
+                    )
+                    .build();
+        }).collect(Collectors.toList());
     }
 }
