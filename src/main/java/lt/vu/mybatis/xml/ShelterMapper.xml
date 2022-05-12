@@ -36,7 +36,7 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select s.ID, s.ADDRESS, s.NAME, a.ID as aid, a.NAME as aname, a.TYPE as atype
         from PUBLIC.SHELTER as s
-        inner join PUBLIC.ANIMAL a
+        left outer join PUBLIC.ANIMAL a
         on a.SHELTER_ID = s.ID
         where s.ID = #{id,jdbcType=BIGINT}
     </select>

@@ -72,6 +72,7 @@ public class ShelterService {
         return animalList.stream().map(animal -> {
             var shelter = shelterMapper.selectByPrimaryKey(animal.getShelterId());
             return AnimalDto.builder()
+                    .id(animal.getId())
                     .name(animal.getName())
                     .type(animal.getType())
                     .shelter(ShelterDto.builder()

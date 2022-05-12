@@ -2,10 +2,11 @@ package lt.vu.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lt.vu.constants.ParamsConstants;
 import lt.vu.dtos.AnimalDto;
 import lt.vu.dtos.FoodDto;
-import lt.vu.services.AnimalService;
+import lt.vu.services.AnimalServiceInterface;
 import lt.vu.services.FoodService;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ import java.util.List;
 public class AnimalModel implements Serializable {
 
     @Inject
-    private AnimalService animalService;
+    private AnimalServiceInterface animalService;
 
     @Inject
     private FoodService foodService;
@@ -37,16 +38,29 @@ public class AnimalModel implements Serializable {
     @Getter
     private List<FoodDto> foodList;
 
+    @Getter
+    private boolean error;
+
+    @SneakyThrows
     @PostConstruct
     public void init() {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         var id = req.getParameter(ParamsConstants.ANIMAL_ID);
+        var error = req.getParameter(ParamsConstants.ERROR);
+        if (error != null && !error.isEmpty()) {
+            this.error = Boolean.parseBoolean(error);
+        }
         animal = animalService.getById(Long.valueOf(id));
         foodList = foodService.getAllExceptAnimal(Long.valueOf(id));
     }
 
-    public String addNewFood() {
-        foodService.addNewFoodToAnimal(animal.getId(), newFoodId);
+    public String addNewFood() throws InterruptedException {
+        try {
+            foodService.addNewFoodToAnimalException(animal.getId(), newFoodId);
+        } catch (Exception e) {
+            return "animal-info.xhtml?animalId=" + animal.getId() + "&error=true&faces-redirect=true";
+        }
+
         return "index?faces-redirect=true";
     }
 }

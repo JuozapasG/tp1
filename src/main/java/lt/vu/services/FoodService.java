@@ -1,8 +1,10 @@
 package lt.vu.services;
 
+import lombok.SneakyThrows;
 import lt.vu.dao.AnimalDAO;
 import lt.vu.dao.FoodDAO;
 import lt.vu.dtos.FoodDto;
+import lt.vu.entities.Animal;
 import lt.vu.entities.Food;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -38,7 +40,7 @@ public class FoodService {
                 .stream()
                 .filter(food -> !food.getAnimalConsumers()
                         .stream()
-                        .map(animal -> animal.getId())
+                        .map(Animal::getId)
                         .collect(Collectors.toList())
                         .contains(animalId)
                 )
@@ -46,8 +48,17 @@ public class FoodService {
                 .collect(Collectors.toList());
     }
 
+    public void addNewFoodToAnimalException(Long animalId, Long foodId) throws InterruptedException {
+        var animal = animalDAO.getByIdLock(animalId);
+        Thread.sleep(5000);
+        var food = foodDAO.getById(foodId);
+        food.getAnimalConsumers().add(animal);
+        animal.getFoods().add(food);
+    }
+
+    @SneakyThrows
     public void addNewFoodToAnimal(Long animalId, Long foodId) {
-        var animal = animalDAO.getById(animalId);
+        var animal = animalDAO.getByIdLock(animalId);
         var food = foodDAO.getById(foodId);
         food.getAnimalConsumers().add(animal);
         animal.getFoods().add(food);

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
-public class AnimalService {
+public class AnimalService implements AnimalServiceInterface{
 
     @Inject
     private AnimalDAO animalDAO;
@@ -25,7 +25,7 @@ public class AnimalService {
     @Inject
     private FoodDAO foodDAO;
 
-    public String save(AnimalDto animalDto){
+    public Long save(AnimalDto animalDto){
         var animal = Animal.builder()
                 .name(animalDto.getName())
                 .type(animalDto.getType())
@@ -36,13 +36,12 @@ public class AnimalService {
         animalDAO.persist(animal);
         food.getAnimalConsumers().add(animal);
         foodDAO.persist(food);
-        return "success";
+        return animal.getId();
     }
 
     public AnimalDto getById(Long id){
         return AnimalDto.from(animalDAO.getById(id));
     }
-
 
     public List<AnimalDto> getAll() {
         return animalDAO.getAll().stream().map(AnimalDto::from).collect(Collectors.toList());

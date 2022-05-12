@@ -5,6 +5,7 @@ import lt.vu.entities.Animal;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
@@ -25,5 +26,9 @@ public class AnimalDAO {
 
     public Animal getById(Long id) {
         return em.find(Animal.class, id);
+    }
+
+    public Animal getByIdLock(Long id) {
+        return em.find(Animal.class, id, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
     }
 }

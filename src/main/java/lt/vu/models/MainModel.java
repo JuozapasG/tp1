@@ -2,6 +2,7 @@ package lt.vu.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lt.vu.cdi.NameGenerator;
 import lt.vu.constants.AnimalTypeConstants;
 import lt.vu.dtos.AnimalDto;
 import lt.vu.dtos.FoodDto;
@@ -53,15 +54,20 @@ public class MainModel implements Serializable {
     @Getter
     private final AnimalTypeConstants animalTypeConstants = new AnimalTypeConstants();
 
+    @Inject
+    private NameGenerator nameGenerator;
+
     @PostConstruct
     public void init() {
         animals = animalService.getAll();
+        animals.forEach(animal -> animal.setName(nameGenerator.generateUniqueName(animal.getName(), animal.getId())));
         shelters = shelterService.getAll();
         food = foodService.getAll();
     }
 
     public String addAnimal() {
-        return animalService.save(newAnimal);
+        animalService.save(newAnimal);
+        return "success";
     }
 
     public String createNewShelter() {
