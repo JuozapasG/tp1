@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
+       bean-discovery-mode="all">
+
+    <alternatives>
+        <class>lt.vu.cdi.TestNameGenerator</class>
+    </alternatives>
+    <interceptors>
+        <class>lt.vu.interceptors.ApiLogger</class>
+    </interceptors>
+    <decorators>
+        <class>lt.vu.cdi.AnimaServiceDecorator</class>
+    </decorators>
+</beans>
