@@ -27,7 +27,7 @@
             <h:inputText value="#{mainModel.newAnimal.name}" label="Animal name" required="true"
                          pt:placeholde="Name"/>
             <h:selectOneMenu value="#{mainModel.newAnimal.type}">
-                <f:selectItems value="#{mainModel.animalTypeConstants.types}"/>
+                <f:selectItems value="#{animalTypeConstants.types}"/>
             </h:selectOneMenu>
             <h:inputText value="#{mainModel.newAnimal.shelter.id}" required="true" label="Animal Shelter"
                          pt:placeholder="Shelter id"/>
@@ -72,6 +72,14 @@
         <h:form>
             <h:inputText value="#{mainModel.newFood.name}" required="true" pt:placeholder="Name" label="Food name"/>
             <h:commandButton action="#{mainModel.createNewFood}" value="Add"/>
+        </h:form>
+    </div>
+    <div>
+        <h:form>
+            <h:outputText value="#{searchService.animalByIdStatus}" />
+            <h:inputText type="number" value="#{mainModel.animalSearchById}" required="true" pt:placeholder="Name" label="Food name"/>
+            <h:commandButton value="Search by id" disabled="#{searchService.taskRunning}" action="#{searchService.searchAnimalById(mainModel.animalSearchById)}">
+            </h:commandButton>
         </h:form>
     </div>
 

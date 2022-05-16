@@ -51,11 +51,12 @@ public class MainModel implements Serializable {
     @Getter
     private List<FoodDto> food = new ArrayList<>();
 
-    @Getter
-    private final AnimalTypeConstants animalTypeConstants = new AnimalTypeConstants();
-
     @Inject
     private NameGenerator nameGenerator;
+
+    @Setter
+    @Getter
+    private Long animalSearchById;
 
     @PostConstruct
     public void init() {

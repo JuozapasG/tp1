@@ -3,6 +3,7 @@ package lt.vu.models;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lt.vu.cdi.AnimalCounter;
 import lt.vu.constants.ParamsConstants;
 import lt.vu.dtos.AnimalDto;
 import lt.vu.dtos.FoodDto;

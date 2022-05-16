@@ -56,7 +56,7 @@ public class ShelterService {
     }
 
     public String migrateAnimal(Long animalId, Long newShelterId) {
-        var animal = animalDAO.getById(animalId);
+        var animal = animalDAO.getByIdLock(animalId);
         var newShelter = shelterDAO.getById(newShelterId);
         if (animal.getShelter() != null) {
             var oldShelter = animal.getShelter();

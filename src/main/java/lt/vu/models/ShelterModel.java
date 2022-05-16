@@ -2,23 +2,26 @@ package lt.vu.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lt.vu.cdi.AnimalCounter;
+import lt.vu.cdi.AnimalCounterImpl;
+import lt.vu.constants.ParamsConstants;
 import lt.vu.dtos.AnimalDto;
 import lt.vu.dtos.MigrationInfo;
 import lt.vu.dtos.ShelterDto;
-import lt.vu.constants.ParamsConstants;
 import lt.vu.services.AnimalService;
 import lt.vu.services.ShelterService;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Model
 @ViewScoped
@@ -29,6 +32,9 @@ public class ShelterModel implements Serializable {
 
     @Inject
     AnimalService animalService;
+
+    @Inject
+    AnimalCounter animalCounter;
 
     @Getter
     @Setter
@@ -41,6 +47,12 @@ public class ShelterModel implements Serializable {
     @Getter
     private List<AnimalDto> otherAnimals;
 
+    @Getter
+    private Map<String, Integer> animalsByTypeCount = new HashMap<>();
+
+    @Getter
+    private List<String> animalsByTypeList = new ArrayList<>();
+
 
     @PostConstruct
     void init() {
@@ -52,6 +64,12 @@ public class ShelterModel implements Serializable {
         shelter = shelterService.getById(Long.valueOf(id));
         otherAnimals = shelterService.getOtherAnimals(Long.valueOf(id));
         migrationInfo.setShelterId(shelter.getId());
+        animalsByTypeCount = animalCounter.getAnimalsByTypeCount(shelter.getAnimals());
+        animalsByTypeCount.keySet().forEach(key -> {
+            if (animalsByTypeCount.get(key) > 0) {
+                animalsByTypeList.add(key);
+            }
+        });
     }
 
     public String migrateAnimal() {

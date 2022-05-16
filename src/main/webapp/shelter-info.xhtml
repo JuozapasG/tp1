@@ -17,6 +17,11 @@
     <h2>Shelter name : #{shelterModel.shelter.name}</h2>
     <h2>Address : #{shelterModel.shelter.address}</h2>
     <ul>
+        <ui:repeat value="#{shelterModel.animalsByTypeList}" var="typeKey">
+            <li>Type - #{typeKey}, count -  #{shelterModel.animalsByTypeCount.get(typeKey)}</li>
+        </ui:repeat>
+    </ul>
+    <ul>
         <ui:repeat value="#{shelterModel.shelter.animals}" var="animal">
             <li>#{animal.name}, is type of #{animal.type}</li>
         </ui:repeat>
